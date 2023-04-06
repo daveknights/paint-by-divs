@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.container {
+    display: flex;
+    margin: auto;
+    width: 1070px;
+}
+.canvas {
+    border: solid 5px greenyellow;
+    display: grid;
+    grid-template-columns: repeat(200, 5px);
+}
+.canvas > div {
+    height: 5px;
+    width: 5px;
+}
+.toolbar {
+    background: #d1b3ff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+}
+.colour-choice {
+    border-radius: 10px;
+    cursor: pointer;
+    height: 50px;
+    width: 70px;
+}
+.red {background: red;}
+.yellow {background: yellow;}
+.green {background: green;}
+.blue {background: blue;}
+.purple {background: purple;}
+.black {background: black;}
+.erase {
+    background: white;
+}
+.toolbar .erase {
+    border: solid 1px black;
+    line-height: 46px;
+    text-align: center;
+}
+.toolbar .erase:after {
+    content: 'Erase';
+    font-size: 0.875rem;
+}
+.colour-choice:hover {
+    border: solid 5px orange;
+    line-height: 40px;
+}
+.draw-btn,
+.rectangle-btn {
+    cursor: pointer;
+    height: 50px;
+    font-size: 2.125rem;
+    padding-bottom: 14px;
+}
+.active,
+.erase.active {
+    border: solid 3px greenyellow;
+}
+.clear-btn {
+    background: #1e90ff;
+    border: solid 1px blue;
+    border-radius: 4px;
+    box-shadow: 0 0 3px 1px #888;
+    color: white;
+    cursor: pointer;
+    height: 30px;
+    letter-spacing: 1px;
+    margin-top: auto;
+}
