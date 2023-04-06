@@ -45,7 +45,7 @@ const canvas = document.querySelector('.canvas');
                     allCells[startRectangle + w].classList.add(...rectClassList);
                     allCells[endRectangle - w].classList.add(...rectClassList);
                 }
-                for (let h = 0; h <= rectH * 200; h+=200) {
+                for (let h = 200; h < rectH * 200; h+=200) {
                     allCells[startRectangle + h].className = '';
                     allCells[startRectangle + rectW + h].className = '';
                     allCells[startRectangle + h].classList.add(...rectClassList);
