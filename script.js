@@ -29,7 +29,6 @@ const canvas = document.querySelector('.canvas');
             toolbar.insertBefore(colour, drawBtn);
         }
         const finishRectangle = () => {
-            console.log('Finish');
             const rectClassList = ['cell', paintColour];
             const rectW = endCol - startCol;
             const rectH = endRow - startRow;
