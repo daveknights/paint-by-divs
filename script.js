@@ -1,4 +1,5 @@
 const canvas = document.querySelector('.canvas');
+        const container = document.querySelector('.container');
         const toolbar = document.querySelector('.toolbar');
         const drawBtn = document.querySelector('.draw-btn');
         const rectangleBtn = document.querySelector('.rectangle-btn');
@@ -10,6 +11,7 @@ const canvas = document.querySelector('.canvas');
         let drawRectangle = false;
         let startRectangle = null;
         let endRectangle = null;
+        let rectangleGuide = null;
         let startRow, startCol, endRow, endCol;
         // Create canvas divs
         for (const div of new Array(25000)) {
@@ -26,36 +28,48 @@ const canvas = document.querySelector('.canvas');
             colour.dataset.colour = paintCol;
             toolbar.insertBefore(colour, drawBtn);
         }
+        const finishRectangle = () => {
+            console.log('Finish');
+            const rectClassList = ['cell', paintColour];
+            const rectW = endCol - startCol;
+            const rectH = endRow - startRow;
+
+            painting = false;
+            rectangleGuide.remove();
+
+            for (let w = 1; w <= rectW; w++) {
+                allCells[startRectangle + w].className = '';
+                allCells[endRectangle - w].className = '';
+                allCells[startRectangle + w].classList.add(...rectClassList);
+                allCells[endRectangle - w].classList.add(...rectClassList);
+            }
+            for (let h = 200; h < rectH * 200; h+=200) {
+                allCells[startRectangle + h].className = '';
+                allCells[startRectangle + rectW + h].className = '';
+                allCells[startRectangle + h].classList.add(...rectClassList);
+                allCells[startRectangle + rectW + h].classList.add(...rectClassList);
+            }
+
+            allCells[endRectangle].className = '';
+            allCells[endRectangle].classList.add(...rectClassList);
+        };
         // Add canvas listeners
         canvas.addEventListener('mousedown', e => {
             painting = true;
-            drawRectangle && (startRectangle = allCells.indexOf(e.target));
-        });
-        canvas.addEventListener('mouseup', () => {
-            painting = false;
-
             if (drawRectangle) {
-                const rectClassList = ['cell', paintColour];
-                const rectW = endCol - startCol;
-                const rectH = endRow - startRow;
+                startRectangle = allCells.indexOf(e.target);
+                // Create rectangle guide
+                rectangleGuide = document.createElement('div');
+                rectangleGuide.className = 'rectangle-guide';
+                rectangleGuide.addEventListener('mouseup', finishRectangle);
+                container.append(rectangleGuide);
 
-                for (let w = 1; w <= rectW; w++) {
-                    allCells[startRectangle + w].className = '';
-                    allCells[endRectangle - w].className = '';
-                    allCells[startRectangle + w].classList.add(...rectClassList);
-                    allCells[endRectangle - w].classList.add(...rectClassList);
-                }
-                for (let h = 200; h < rectH * 200; h+=200) {
-                    allCells[startRectangle + h].className = '';
-                    allCells[startRectangle + rectW + h].className = '';
-                    allCells[startRectangle + h].classList.add(...rectClassList);
-                    allCells[startRectangle + rectW + h].classList.add(...rectClassList);
-                }
-
-                allCells[endRectangle].className = '';
-                allCells[endRectangle].classList.add(...rectClassList);
+                rectangleGuide.style.left = allCells[startRectangle].getBoundingClientRect().x + 'px';
+                rectangleGuide.style.top = allCells[startRectangle].getBoundingClientRect().y + 'px';
+                rectangleGuide.style.borderColor = paintColour;
             }
         });
+        canvas.addEventListener('mouseup', () => painting = false);
         canvas.addEventListener('mousemove', e => {
             const target = e.target;
 
@@ -74,6 +88,9 @@ const canvas = document.querySelector('.canvas');
                     startCol = (startRectangle + 1) % 200;
                     endRow = Math.ceil((endRectangle + 1) / 200);
                     endCol = (endRectangle + 1) % 200;
+
+                    rectangleGuide.style.height = `${((endRow - startRow) * 5) + 5}px`;
+                    rectangleGuide.style.width = `${(endCol - startCol) * 5 + 5}px`;
                 } else {
                     target.className = '';
                     target.classList.add('cell', paintColour);

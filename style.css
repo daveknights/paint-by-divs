@@ -73,3 +73,8 @@
     letter-spacing: 1px;
     margin-top: auto;
 }
+.rectangle-guide {
+    border-style: solid;
+    border-width: 5px;
+    position: absolute;
+}
