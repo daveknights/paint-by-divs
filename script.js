@@ -72,11 +72,6 @@ canvas.addEventListener('mouseup', () => painting = false);
 canvas.addEventListener('mousemove', e => {
     const target = e.target;
 
-    if (paintColour === undefined) {
-        paintColour = 'black';
-        document.querySelector('.colour-choice.black').classList.add('active');
-    }
-
     if (painting && target.classList.contains('cell')) {
         if (drawRectangle) {
             allCells[startRectangle].className = '';
@@ -98,9 +93,13 @@ canvas.addEventListener('mousemove', e => {
 });
 // Add toolbar listeners
 toolbar.addEventListener('click', e => {
-    document.querySelectorAll('.colour-choice').forEach(col => col.classList.remove('active'));
-    paintColour = e.target.dataset.colour;
-    e.target.classList.add('active');
+    const target = e.target;
+
+    if (target.classList.contains('colour-choice')) {
+        document.querySelectorAll('.colour-choice').forEach(col => col.classList.remove('active'));
+        paintColour = target.dataset.colour;
+        target.classList.add('active');
+    }
 });
 drawBtn.addEventListener('click', () => {
     rectangleBtn.classList.remove('active');
